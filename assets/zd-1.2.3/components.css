@@ -17,8 +17,7 @@ body.zd{margin:0;background:var(--color-surface-canvas);color:var(--color-text-d
 .zd .zd-num{font-variant-numeric:tabular-nums}
 .zd-wrap{max-width:var(--layout-max);margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-8)}
 .zd-section{margin:0 0 var(--space-7)}
-.zd-h2{display:flex;align-items:center;gap:var(--space-2);font-size:var(--zd-font-h2);margin:0 0 var(--space-4)}
-.zd-h2::before{content:"";width:18px;height:3px;background:var(--color-brand-default);border-radius:2px;flex:none}
+.zd-h2{font-size:var(--zd-font-h2);margin:0 0 var(--space-4)}
 .zd-muted{color:var(--color-text-muted)}
 .zd-small{font-size:var(--zd-font-small)}
 .zd-kicker{font-size:var(--zd-font-caption);letter-spacing:.08em;color:var(--color-text-subtle);margin:0 0 var(--space-2)}
