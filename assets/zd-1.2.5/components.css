@@ -1,4 +1,4 @@
-/* 振達設計規範 Workshop 1.2.3 —— 網站元件（純 CSS，不綁框架）
+/* 振達設計規範 Workshop 1.2.5 —— 網站元件（純 CSS，不綁框架）
    引用順序：fonts/fonts.css → tokens/tokens.css → components/components.css
    規則：只用 tokens.css 的 semantic 變數；不得寫死色碼與字級（tools/check.py 會查）。
    類別一律 zd- 前綴，避免與既有網站樣式衝突。 */
@@ -28,6 +28,8 @@ body.zd{margin:0;background:var(--color-surface-canvas);color:var(--color-text-d
 .zd-header__in{max-width:var(--layout-max);margin:0 auto;padding:var(--space-3) var(--space-5);display:flex;align-items:center;gap:var(--space-5)}
 .zd-header__title{font-weight:var(--weight-bold);color:var(--color-text-default);text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:var(--space-2)}
 .zd-header__title::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--color-brand-default)}
+/* 窄屏短站名（1.2.5）：寬屏顯示 __full，≤760px 只顯示 __short。頁首維持一行。 */
+.zd-header__short{display:none}
 .zd-nav{display:flex;gap:var(--space-1);margin-left:auto;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .zd-nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 var(--space-3);border-radius:var(--radius-pill);color:var(--color-text-muted);text-decoration:none;font-size:var(--zd-font-label);white-space:nowrap}
 .zd-nav a:hover{background:var(--color-brand-tint);color:var(--color-text-default)}
@@ -71,7 +73,7 @@ body.zd{margin:0;background:var(--color-surface-canvas);color:var(--color-text-d
 :where(.zd){overflow-wrap:break-word}
 :where(.zd) :where(.zd-notes,.zd-source,.zd-wrap,figcaption,blockquote,address,dd){overflow-wrap:anywhere}
 :where(.zd) :where(table){overflow-wrap:break-word} /* 表格內不用 anywhere，免得欄寬被壓縮；寬表照舊橫捲 */
-:where(.zd) :where(.zd-kpis,.zd-layers,.zd-layer,.zd-grid-2,.zd-conclusion,.zd-conclusion__points li,.zd-meta dl,.zd-legend,.zd-chips,.zd-actions,.zd-header__in,.zd-step)>*{min-width:0}
+:where(.zd) :where(.zd-kpis,.zd-layers,.zd-layer,.zd-grid-2,.zd-conclusion,.zd-conclusion__points li,.zd-meta dl,.zd-legend,.zd-chips,.zd-actions,.zd-header__in,.zd-step,.zd-card-grid,.zd-card,.zd-card dl,.zd-news,.zd-news li,.zd-tabs,.zd-dual)>*{min-width:0}
 :where(.zd) :where(.zd-shrink,.zd-shrink>*){min-width:0}
 :where(.zd) :where(.zd-wrap){overflow-wrap:anywhere;min-width:0}
 /* KPI 件數形狀（1.2.1）：形狀各自帶燈號 solid 色、文字維持內文色；形狀用 aria-hidden 的 span，讀屏只讀文字。
@@ -148,6 +150,7 @@ body.zd{margin:0;background:var(--color-surface-canvas);color:var(--color-text-d
 .zd-kind{display:inline-block;padding:2px 8px;border-radius:var(--radius-pill);font-size:var(--zd-font-caption);font-weight:var(--weight-bold);background:var(--color-surface-sunken);color:var(--color-text-muted);margin-right:6px}
 .zd-kind--inference{background:var(--color-brand-tint);color:var(--color-brand-default)}
 .zd-source{font-size:var(--zd-font-caption);color:var(--color-text-subtle)}
+.zd-source a{color:var(--color-text-subtle)}
 
 /* ---------- 12 層級卡 Layer card ---------- */
 .zd-layers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
@@ -161,9 +164,52 @@ body.zd{margin:0;background:var(--color-surface-canvas);color:var(--color-text-d
 .zd-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:var(--space-3) 0 var(--space-5);list-style:none;padding:0}
 .zd-chip{font-size:var(--zd-font-caption);padding:4px 10px;border-radius:var(--radius-pill);background:var(--color-surface-sunken);color:var(--color-text-muted)}
 
+/* ---------- 13 方向標籤 Dir（1.2.5）：營運方向，不是燈號、不是股價。文字必在；不判沿用 .zd-signal--na。
+   <span class="zd-dir zd-dir--pos">↗ 偏多</span> */
+.zd-dir{display:inline-block;font-size:var(--zd-font-label);font-weight:var(--weight-bold);padding:2px 10px;border-radius:var(--radius-pill);border:1px solid var(--color-level-1-border);background:var(--color-surface-default);color:var(--color-text-default);white-space:nowrap}
+.zd-dir--pos{border-color:var(--color-border-strong)}
+.zd-dir--neg{border-color:var(--color-border-strong);border-style:dashed}
+.zd-dir--neu{color:var(--color-text-muted)}
+
+/* ---------- 14 展望修正 Rev（1.2.5）：與上期展望相比。不用燈號色、不用市場紅綠。
+   <span class="zd-rev zd-rev--up">↑ 上修</span> */
+.zd-rev{display:inline-block;font-size:var(--zd-font-label);font-weight:var(--weight-bold);padding:2px 10px;border-radius:var(--radius-pill);border:1px solid var(--color-level-1-border);background:var(--color-surface-default);color:var(--color-text-default);white-space:nowrap}
+.zd-rev--up{border-color:var(--color-border-strong)}
+.zd-rev--down{border-color:var(--color-border-strong);border-style:dashed}
+.zd-rev--hold{color:var(--color-text-muted)}
+.zd-rev--mix{color:var(--color-text-muted);border-style:dashed}
+
+/* ---------- 15 分頁 Tabs（1.2.5）：頁內靜態分頁，目前頁 aria-current="page"。未選項不畫淡框（對齊 .zd-nav）。 */
+.zd-tabs{display:flex;flex-wrap:wrap;gap:var(--space-1);margin:0 0 var(--space-4);padding:0;list-style:none}
+.zd-tabs a{display:inline-flex;align-items:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-pill);color:var(--color-text-muted);text-decoration:none;font-size:var(--zd-font-label);background:var(--color-surface-default)}
+.zd-tabs a:hover{background:var(--color-brand-tint);color:var(--color-text-default)}
+.zd-tabs a[aria-current="page"]{background:var(--color-brand-default);color:var(--color-text-on-brand)}
+
+/* ---------- 16 缺值 NA ＋ 雙值 Dual（1.2.5） ---------- */
+.zd-na{color:var(--color-text-subtle);font-size:var(--zd-font-caption)}
+.zd-dual{margin:0}
+.zd-dual__primary{display:block;font-size:var(--zd-font-h3);font-weight:var(--weight-bold);font-variant-numeric:tabular-nums}
+.zd-dual__secondary{display:block;font-size:var(--zd-font-small);color:var(--color-text-muted);font-variant-numeric:tabular-nums}
+
+/* ---------- 17 多指標卡 Card grid（1.2.5） ---------- */
+.zd-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--space-3);list-style:none;margin:0;padding:0}
+.zd-card{background:var(--color-surface-default);border-radius:var(--radius-md);box-shadow:var(--shadow-1);padding:var(--space-4);border-left:5px solid var(--zd-tone,var(--color-level-1-border))}
+.zd-card h3{margin:0 0 var(--space-2)}
+.zd-card dl{display:grid;grid-template-columns:auto 1fr;gap:var(--space-1) var(--space-3);margin:var(--space-3) 0 0;font-size:var(--zd-font-small)}
+.zd-card dt{color:var(--color-text-muted)}
+.zd-card dd{margin:0;min-width:0}
+
+/* ---------- 18 新聞列表 News ＋ 原文引句 Quote（1.2.5） ---------- */
+.zd-news{list-style:none;margin:0;padding:0}
+.zd-news li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:var(--space-3);margin:0 0 var(--space-5)}
+.zd-news h3{margin:0 0 var(--space-2)}
+.zd-quote{margin:0 0 var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-surface-default);border-left:4px solid var(--color-level-1-border);border-radius:var(--radius-sm);font-size:var(--zd-font-small)}
+
 /* ---------- 手機 Mobile（≤760px） ---------- */
 @media (max-width:760px){
   .zd-header__in{padding:var(--space-2) var(--space-4);gap:var(--space-3)}
+  .zd-header__full{display:none}
+  .zd-header__short{display:inline}
   .zd-wrap{padding:var(--space-5) var(--space-4) var(--space-7)}
   .zd-conclusion{grid-template-columns:1fr;padding:var(--space-5);gap:var(--space-4)}
   .zd-layers,.zd-grid-2{grid-template-columns:1fr}

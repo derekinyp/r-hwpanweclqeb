@@ -1,4 +1,4 @@
-/* 由 tools/build_tokens.py 自 tokens/tokens.json 產生，請勿手改。振達設計規範 Workshop（工坊） 1.2.3 */
+/* 由 tools/build_tokens.py 自 tokens/tokens.json 產生，請勿手改。振達設計規範 Workshop（工坊） 1.2.5 */
 /* primitive（--p-*）只供本檔引用；產出請只用 semantic 變數。 */
 :root{
   --p-color-birch-50: #FFFDF8;
